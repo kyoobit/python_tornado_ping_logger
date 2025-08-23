@@ -77,7 +77,7 @@ class PingHandler(tornado.web.RequestHandler):
         # Write the serialized request data to standard out
         logging.info(f"PING - {serialized_ping}")
 
-        ## Always return 204
+        # Always return 204
         self.set_status(204)
 
     def serialize_ping_data(self, *args, **kwargs) -> dict:
@@ -88,9 +88,9 @@ class PingHandler(tornado.web.RequestHandler):
 
         # Serialize the request data
         serialized_ping = {
-            'timestamp': datetime.now().isoformat(),
-            'ping': None,
-            'err': None,
+            "timestamp": datetime.now().isoformat(),
+            "ping": None,
+            "err": None,
         }
 
         # self.request ---> tornado.httputil.HTTPServerRequest
@@ -99,11 +99,13 @@ class PingHandler(tornado.web.RequestHandler):
             # Request body data "should be" in JSON format
             try:
                 ping = self.request.body.decode()
-                serialized_ping.update(ping = json.loads(ping))
+                serialized_ping.update(ping=json.loads(ping))
             except Exception as err:
-                logging.warning(f"Failed JSON load of body data: {self.request.body!r}, exception: '{err}'")
-                serialized_ping.update(ping = str(self.request.body))
-                serialized_ping.update(err = str(err))
+                logging.warning(
+                    f"Failed JSON load of body data: {self.request.body!r}, exception: '{err}'"
+                )
+                serialized_ping.update(ping=str(self.request.body))
+                serialized_ping.update(err=str(err))
 
         # Return the serialized ping data
         serialized_ping = json.dumps(serialized_ping)
