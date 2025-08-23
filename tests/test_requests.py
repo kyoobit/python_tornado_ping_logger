@@ -29,10 +29,8 @@ class TestApp(tornado.testing.AsyncHTTPTestCase):
                 self.assertEqual(response.body, payload)
 
     def test_ping(self):
-        for ping in [
-            {"test": True}
-        ]:
+        for ping in [{"test": True}]:
             # Make the HTTP request
-            response = self.fetch("/ping", method='POST', body=json.dumps(ping))
+            response = self.fetch("/ping", method="POST", body=json.dumps(ping))
             # Check response code for the expected value
             self.assertEqual(response.code, 204)
