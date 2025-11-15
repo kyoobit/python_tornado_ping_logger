@@ -30,7 +30,7 @@ test: ## Test the application
 	$(VENV_BIN)/coverage report -m
 
 depcheck: ## Dependency check for known vulnerabilities
-	# Perform a scan of dependancies backed by the OSS Index
+	# Perform a scan of dependencies backed by the OSS Index
 	# Requires env vars: OSS_INDEX_USER OSS_INDEX_PASSWORD to be set
 	# TODO: Watch for an update that allows the use of a token in ossindex-python
 	# https://github.com/sonatype-nexus-community/ossindex-python/blob/main/docs/usage.rst#authenticating-to-oss-index
