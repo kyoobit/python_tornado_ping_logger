@@ -67,7 +67,7 @@ if __name__ == "__main__":
     # Do not include the date when systemd service is True
     # Logs are collected to journalctl which already includes a date
     if argv.systemd:
-        log_format = "[app=tornado_geo] %(levelname)s - %(message)s"
+        log_format = "[app=ping_logger] %(levelname)s - %(message)s"
     else:
         log_format = "[%(asctime)s] %(levelname)s - %(message)s"
     log_datefmt = "%Y-%m-%d %H:%M:%S %Z"
