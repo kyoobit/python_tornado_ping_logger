@@ -36,7 +36,6 @@ def log_function(handler, *args, **kwargs):
 
 
 class DefaultHandler(tornado.web.RequestHandler):
-
     def initialize(self, **kwargs):
         name = f"{Path(__file__).name} -"
         logging.debug(f"{name} initialize - **kwargs: {kwargs!r}")
@@ -52,7 +51,6 @@ class DefaultHandler(tornado.web.RequestHandler):
 
 
 class PingHandler(tornado.web.RequestHandler):
-
     def initialize(self, **kwargs):
         name = f"{Path(__file__).name} -"
         logging.debug(f"{name} initialize - **kwargs: {kwargs!r}")
