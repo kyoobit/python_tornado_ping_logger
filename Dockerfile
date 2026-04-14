@@ -1,30 +1,30 @@
-FROM docker.io/library/alpine:latest
+# podman build --tag tornado-ping-logger:v1 .
+# podman run --rm --interactive --tty --name ping-logger-help tornado-ping-logger:v1 --help
+# podman run --rm --detach --tty --publish 8888:8888/tcp --name ping-logger tornado-ping-logger:v1 --verbose
+FROM docker.io/library/python:slim
 
-## Add os build dependencies
-## podman run --rm --tty --interactive rust:alpine /bin/sh
-## apk update; apk info <package>
-RUN apk add python3 py3-tornado py3-geoip2
+# Set the working directory to /app
+WORKDIR /app
 
-## Copy the source files for the project
-COPY app.py /app.py
-COPY cli.py /cli.py
+# Install uv using the official installer
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-## Add a user account
-## No need to run as root in the container
-RUN addgroup -S appgroup \
-    && adduser -S appuser -G appgroup
+# Add the Python files for the application
+COPY pyproject.toml uv.lock README.md *.py ./
 
-## Run all future commands as appuser
+# Set uv to use the .cache directory
+ENV UV_CACHE_DIR=/app/.cache/uv
+
+# Install Python dependencies
+RUN uv sync --frozen --no-cache
+
+# Add a user account
+# No need to run as root in the container
+RUN adduser --disabled-password --disabled-login --no-create-home appuser
+
+# No need to run as root in the container
 USER appuser
 
-## Setup the entrypoint
-ENTRYPOINT ["python3", "/cli.py"]
-## Example usage:
-##   podman build --tag tornado-ping-logger:v1 .
-##
-## View the available program options:
-##   podman run --rm --name tornado-ping-logger-help tornado-ping-logger:v1 --help
-##
-## Run a container instance:
-##   podman run --rm --detach --publish 8888:8888/tcp \
-##   --name tornado-ping-logger tornado-ping-logger:v1 --verbose
+# Set the command to run on start up
+ENTRYPOINT ["uv", "run",  "/app/cli.py"]
+CMD ["--help"]
